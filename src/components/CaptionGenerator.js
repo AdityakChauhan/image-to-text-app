@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Button } from "@progress/kendo-react-buttons";
 import { Card, CardBody, CardTitle } from "@progress/kendo-react-layout";
+import { ProgressBar } from "@progress/kendo-react-progressbars";
+import { Notification, NotificationGroup } from "@progress/kendo-react-notification";
 
 const ImageCaption = ({ imageFile }) => {
   const [caption, setCaption] = useState("Explanation will appear here...");
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({ show: false, message: "", type: "" });
 
   const handleGenerateCaption = async () => {
     if (!imageFile) {
-      alert("Please upload an image first!");
+      setNotification({ show: true, message: "Please upload an image first!", type: "error" });
       return;
     }
 
@@ -45,12 +48,15 @@ const ImageCaption = ({ imageFile }) => {
       const data = await response.json();
       if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
         setCaption(data.candidates[0].content.parts[0].text);
+        setNotification({ show: true, message: "Caption generated successfully!", type: "success" });
       } else {
         setCaption("No Explanation generated.");
+        setNotification({ show: true, message: "Failed to generate caption.", type: "error" });
       }
     } catch (error) {
       console.error("Explanation Generation Error:", error);
       setCaption("Failed to generate Explanation.");
+      setNotification({ show: true, message: "Error generating caption.", type: "error" });
     }
 
     setLoading(false);
@@ -73,17 +79,34 @@ const ImageCaption = ({ imageFile }) => {
   };
 
   return (
-    <Card style={{ maxWidth: 500, margin: "20px auto", padding: "20px", textAlign: "center" }}>
-      <CardTitle>AI-Generated Caption</CardTitle>
+    <>
+      <Card style={{ maxWidth: 600, margin: "20px auto", padding: "20px", textAlign: "center" }}>
+        <CardTitle>🖼️ AI-Generated Caption</CardTitle>
 
-      <Button primary onClick={handleGenerateCaption} disabled={loading}>
-        {loading ? "Generating..." : "Explain this image"}
-      </Button>
+        <Button primary onClick={handleGenerateCaption} disabled={loading} style={{ marginBottom: "15px" }}>
+          {loading ? "Generating..." : "Explain this image"}
+        </Button>
 
-      <CardBody>
-        <p style={{ whiteSpace: "pre-wrap", fontWeight: "bold" }}>{caption}</p>
-      </CardBody>
-    </Card>
+        {loading && <ProgressBar animation={true} now={70} style={{ marginBottom: "20px" }} />}
+
+        <CardBody>
+          <p style={{ whiteSpace: "pre-wrap", fontWeight: "bold" }}>{caption}</p>
+        </CardBody>
+      </Card>
+
+      {/* Kendo Notification */}
+      <NotificationGroup style={{ right: 20, bottom: 20, alignItems: 'flex-start' }}>
+        {notification.show && (
+          <Notification
+            type={{ style: notification.type, icon: true }}
+            closable={true}
+            onClose={() => setNotification({ ...notification, show: false })}
+          >
+            {notification.message}
+          </Notification>
+        )}
+      </NotificationGroup>
+    </>
   );
 };
 

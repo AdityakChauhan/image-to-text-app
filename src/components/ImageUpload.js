@@ -1,64 +1,15 @@
-
-
-// import React, { useState } from "react";
-// import { Upload } from "@progress/kendo-react-upload";
-// import { Card, CardBody } from "@progress/kendo-react-layout";
-
-// const ImageUpload = ({ onImageSelect }) => {
-//   const [imagePreview, setImagePreview] = useState(null);
-
-//   const handleUpload = (event) => {
-//     const file = event.newState[0]?.getRawFile();
-//     if (file) {
-//       const objectURL = URL.createObjectURL(file); // ✅ Creates a URL for the uploaded image
-//       setImagePreview(objectURL);
-//       onImageSelect(objectURL); // ✅ Pass image to parent component
-//     }
-//   };
-
-//   return (
-//     <Card style={{ width: 400, padding: 20, textAlign: "center" }}>
-//       <CardBody>
-//         {/* KendoReact Upload Component */}
-//         <Upload
-//           batch={false}
-//           multiple={false}
-//           withCredentials={false}
-//           onAdd={handleUpload}
-//         />
-        
-//         {/* Display Image Preview */}
-//         {imagePreview && (
-//           <img
-//             src={imagePreview}
-//             alt="Uploaded Preview"
-//             style={{
-//               width: "100%",
-//               marginTop: 20,
-//               borderRadius: 8,
-//               border: "1px solid #ddd",
-//             }}
-//           />
-//         )}
-//       </CardBody>
-//     </Card>
-//   );
-// };
-
-// export default ImageUpload;
-
-
 import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import { Upload } from "@progress/kendo-react-upload";
 import { Button } from "@progress/kendo-react-buttons";
-import { Card, CardBody } from "@progress/kendo-react-layout";
+import { Card, CardBody, CardTitle } from "@progress/kendo-react-layout";
 
 const ImageUpload = ({ onImageSelect }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [cameraActive, setCameraActive] = useState(false);
   const webcamRef = useRef(null);
 
+  // Handle File Upload
   const handleUpload = (event) => {
     const file = event.newState[0]?.getRawFile();
     if (file) {
@@ -68,6 +19,7 @@ const ImageUpload = ({ onImageSelect }) => {
     }
   };
 
+  // Capture image from webcam
   const captureImage = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
@@ -78,23 +30,38 @@ const ImageUpload = ({ onImageSelect }) => {
   };
 
   return (
-    <Card style={{ width: 1000, padding: 20, textAlign: "center" }}>
+    <Card style={{ width: 600, padding: 20, margin: "20px auto", textAlign: "center" }}>
+      <CardTitle>Upload or Capture Image</CardTitle>
       <CardBody>
-        {/* KendoReact Upload Component */}
-        <Upload batch={false} multiple={false} withCredentials={false} onAdd={handleUpload} />
+        {/* KendoReact Upload */}
+        <Upload
+          batch={false}
+          multiple={false}
+          withCredentials={false}
+          onAdd={handleUpload}
+        />
 
         {/* Camera Capture */}
         {cameraActive ? (
           <>
-            <Webcam ref={webcamRef} screenshotFormat="image/png" />
-            <Button onClick={captureImage}>Capture Photo</Button>
+            <Webcam ref={webcamRef} screenshotFormat="image/png" style={{ width: "100%", marginTop: 20 }} />
+            <Button onClick={captureImage} style={{ marginTop: 10 }}>Capture Photo</Button>
+            <Button onClick={() => setCameraActive(false)} style={{ marginTop: 10, marginLeft: 10 }}>Cancel</Button>
           </>
         ) : (
-          <Button onClick={() => setCameraActive(true)}>Capture from Camera</Button>
+          <Button onClick={() => setCameraActive(true)} style={{ marginTop: 20 }}>
+            Capture from Camera
+          </Button>
         )}
 
-        {/* Display Image Preview */}
-        {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: "100%", marginTop: 20, borderRadius: 8, border: "1px solid #ddd" }} />}
+        {/* Image Preview */}
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Preview"
+            style={{ width: "100%", marginTop: 20, borderRadius: 8, border: "1px solid #ddd" }}
+          />
+        )}
       </CardBody>
     </Card>
   );
