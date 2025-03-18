@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
-import { Upload } from "@progress/kendo-react-upload";
 import { Button } from "@progress/kendo-react-buttons";
 import { Card, CardBody, CardTitle } from "@progress/kendo-react-layout";
 
@@ -9,9 +8,8 @@ const ImageUpload = ({ onImageSelect }) => {
   const [cameraActive, setCameraActive] = useState(false);
   const webcamRef = useRef(null);
 
-  // Handle File Upload
-  const handleUpload = (event) => {
-    const file = event.newState[0]?.getRawFile();
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
       const objectURL = URL.createObjectURL(file);
       setImagePreview(objectURL);
@@ -19,7 +17,6 @@ const ImageUpload = ({ onImageSelect }) => {
     }
   };
 
-  // Capture image from webcam
   const captureImage = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
@@ -33,12 +30,12 @@ const ImageUpload = ({ onImageSelect }) => {
     <Card style={{ width: 600, padding: 20, margin: "20px auto", textAlign: "center" }}>
       <CardTitle>Upload or Capture Image</CardTitle>
       <CardBody>
-        {/* KendoReact Upload */}
-        <Upload
-          batch={false}
-          multiple={false}
-          withCredentials={false}
-          onAdd={handleUpload}
+        {/* Native Upload */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ marginBottom: 20 }}
         />
 
         {/* Camera Capture */}

@@ -103,7 +103,6 @@
 
 // export default TextExtractor;
 
-
 import React, { useState } from "react";
 import Tesseract from "tesseract.js";
 import { Button } from "@progress/kendo-react-buttons";
@@ -129,7 +128,7 @@ const TextExtractor = ({ imageFile, onTextExtracted }) => {
 
       const finalText = data.text || "No text detected.";
       setExtractedText(finalText);
-      onTextExtracted(finalText); // Pass extracted text to parent component
+      onTextExtracted(finalText);
     } catch (error) {
       console.error("OCR Error:", error);
       setExtractedText("Failed to extract text. Please try again.");
