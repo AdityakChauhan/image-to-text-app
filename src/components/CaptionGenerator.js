@@ -3,7 +3,7 @@ import { Button } from "@progress/kendo-react-buttons";
 import { Card, CardBody, CardTitle } from "@progress/kendo-react-layout";
 
 const ImageCaption = ({ imageFile }) => {
-  const [caption, setCaption] = useState("Caption will appear here...");
+  const [caption, setCaption] = useState("Explanation will appear here...");
   const [loading, setLoading] = useState(false);
 
   const handleGenerateCaption = async () => {
@@ -28,6 +28,7 @@ const ImageCaption = ({ imageFile }) => {
             contents: [
               {
                 parts: [
+                  { text: "Explain this image to me." },
                   {
                     inlineData: {
                       mimeType: "image/jpeg",
@@ -45,11 +46,11 @@ const ImageCaption = ({ imageFile }) => {
       if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
         setCaption(data.candidates[0].content.parts[0].text);
       } else {
-        setCaption("No caption generated.");
+        setCaption("No Explanation generated.");
       }
     } catch (error) {
-      console.error("Caption Generation Error:", error);
-      setCaption("Failed to generate caption.");
+      console.error("Explanation Generation Error:", error);
+      setCaption("Failed to generate Explanation.");
     }
 
     setLoading(false);
@@ -76,7 +77,7 @@ const ImageCaption = ({ imageFile }) => {
       <CardTitle>AI-Generated Caption</CardTitle>
 
       <Button primary onClick={handleGenerateCaption} disabled={loading}>
-        {loading ? "Generating..." : "Generate Caption"}
+        {loading ? "Generating..." : "Explain this image"}
       </Button>
 
       <CardBody>
