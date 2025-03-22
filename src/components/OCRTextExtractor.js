@@ -103,6 +103,9 @@
 
 // export default TextExtractor;
 
+
+
+// this is the best ,last working file
 import React, { useState } from "react";
 import Tesseract from "tesseract.js";
 import { Button } from "@progress/kendo-react-buttons";
@@ -153,3 +156,4 @@ const TextExtractor = ({ imageFile, onTextExtracted }) => {
 };
 
 export default TextExtractor;
+
