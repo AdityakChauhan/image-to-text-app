@@ -23,7 +23,7 @@ const ImageCaption = ({ imageFile }) => {
       if (!base64Image) throw new Error("Failed to convert image.");
 
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDtsXX_LroupoiKn28Hyu3QWWmhyMG6DbY`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

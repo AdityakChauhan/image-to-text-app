@@ -319,7 +319,7 @@ function App() {
       {/* AppBar (Top Navigation) */}
       <AppBar style={{ backgroundColor: "#0f0f10", color: "white" }}>
         <AppBarSection>
-          <h1 className="app-title">🚀 AI Image-to-Text</h1>
+          <h1 className="app-title">🚀 PixelGenie AI</h1>
         </AppBarSection>
       </AppBar>
 
