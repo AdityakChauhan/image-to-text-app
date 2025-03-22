@@ -292,7 +292,7 @@ import "./App.css";
 
 // Kendo UI Components
 import { AppBar, AppBarSection } from "@progress/kendo-react-layout";
-import { ProgressBar } from "@progress/kendo-react-progressbars";
+// import { ProgressBar } from "@progress/kendo-react-progressbars";
 import { Notification, NotificationGroup } from "@progress/kendo-react-notification";
 import { Button } from "@progress/kendo-react-buttons";
 
